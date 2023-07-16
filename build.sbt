@@ -2,7 +2,14 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "2.13.11"
 
+
+lazy val sttpVersion = "3.8.16"
+
 lazy val root = (project in file("."))
   .settings(
     name := "sttp-cookbook"
   )
+
+libraryDependencies ++= Seq(
+  "com.softwaremill.sttp.client3" %% "core" % sttpVersion
+)
