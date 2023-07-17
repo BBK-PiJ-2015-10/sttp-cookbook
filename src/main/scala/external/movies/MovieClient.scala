@@ -1,17 +1,27 @@
 package external.movies
 
 import sttp.client3._
+import sttp.model.Uri
 
-object MovieClient {
+trait MovieClient {
 
-  val backend = HttpURLConnectionBackend()
+  def getMovies() : String
 
-  val response: Identity[Response[Either[String, String]]] =
-    basicRequest.get(uri"http://httpbin.org/get").send(backend)
+}
 
-  response.body  match {
-    case Left(error) =>
-    case Right(result) =>
+
+case class MovieClientImpl(url: String, connection: SttpBackend[Identity, Any]) extends MovieClient {
+  override def getMovies(): String = {
+
+    val response: Identity[Response[Either[String, String]]] =
+      basicRequest.get(Uri(url)).send(connection)
+
+    response.body match {
+      case Left(error) => println(s"fucker : $error")
+      case Right(result) => println(s"dog : $result")
+    }
+
+    "done"
+
   }
-
 }
