@@ -10,11 +10,12 @@ trait MovieClient {
 }
 
 
-case class MovieClientImpl(url: String, connection: SttpBackend[Identity, Any]) extends MovieClient {
+case class MovieClientImpl(uri: Uri, connection: SttpBackend[Identity, Any]) extends MovieClient {
   override def getMovies(): String = {
 
+
     val response: Identity[Response[Either[String, String]]] =
-      basicRequest.get(Uri(url)).send(connection)
+      basicRequest.get(uri).send(connection)
 
     response.body match {
       case Left(error) => println(s"fucker : $error")

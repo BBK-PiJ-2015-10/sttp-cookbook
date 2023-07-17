@@ -1,9 +1,10 @@
 import external.movies.{MovieClient, MovieClientImpl}
-import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
+import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend, UriContext}
+import sttp.model.Uri
 
 object ApplicationRunner extends App{
 
-  val url = "http://httpbin.org/pet"
+  val url: Uri = uri"http://httpbin.org/get"
 
   val backendConnection: SttpBackend[Identity, Any] = HttpURLConnectionBackend()
 
