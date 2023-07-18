@@ -10,9 +10,10 @@ trait MovieClient {
 }
 
 
-case class MovieClientImpl(uri: Uri, connection: SttpBackend[Identity, Any]) extends MovieClient {
+case class MovieClientImpl(urlDomain: String, port: Int,connection: SttpBackend[Identity, Any]) extends MovieClient {
   override def getMovies(): String = {
 
+    val uri: Uri = Uri.apply(urlDomain).port(port).addPath(Seq("movies"))
 
     val response: Identity[Response[Either[String, String]]] =
       basicRequest.get(uri).send(connection)

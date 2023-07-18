@@ -4,11 +4,12 @@ import sttp.model.Uri
 
 object ApplicationRunner extends App{
 
-  val url: Uri = uri"http://httpbin.org/get"
+  val urlDomain = "localhost"
+  val port = 9000
 
   val backendConnection: SttpBackend[Identity, Any] = HttpURLConnectionBackend()
 
-  val movieClient : MovieClient = MovieClientImpl(url,backendConnection)
+  val movieClient : MovieClient = MovieClientImpl(urlDomain,port,backendConnection)
 
   movieClient.getMovies()
 
