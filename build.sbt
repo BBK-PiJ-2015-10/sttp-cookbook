@@ -4,6 +4,7 @@ ThisBuild / scalaVersion := "2.13.11"
 
 
 lazy val sttpVersion = "3.8.16"
+lazy val playJsonVersion = "2.10.0-RC9"
 
 lazy val root = (project in file("."))
   .settings(
@@ -11,5 +12,6 @@ lazy val root = (project in file("."))
   )
 
 libraryDependencies ++= Seq(
-  "com.softwaremill.sttp.client3" %% "core" % sttpVersion
+  "com.softwaremill.sttp.client3" %% "core" % sttpVersion,
+  "com.typesafe.play" %% "play-json" % playJsonVersion
 )

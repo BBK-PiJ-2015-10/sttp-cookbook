@@ -1,4 +1,4 @@
-import external.movies.{MovieClient, MovieClientImpl}
+import movies.services.{MovieClient, MovieClientImpl}
 import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend, UriContext}
 import sttp.model.Uri
 

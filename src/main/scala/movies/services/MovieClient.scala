@@ -1,4 +1,4 @@
-package external.movies
+package movies.services
 
 import sttp.client3._
 import sttp.model.Uri
