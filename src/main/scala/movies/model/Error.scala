@@ -7,7 +7,7 @@ case class Error(message: String)
 object Error {
 
   implicit val errorReads: Reads[Error] = (
-    (JsPath \ "message").read)(Error.apply _)
+    (JsPath \ "message").read[String].map(m => Error(m)))
 
 }
 
