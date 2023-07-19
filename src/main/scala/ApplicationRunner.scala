@@ -11,6 +11,6 @@ object ApplicationRunner extends App{
 
   val movieClient : MovieClient = MovieClientImpl(urlDomain,port,backendConnection)
 
-  movieClient.getMovies()
+  movieClient.getMovies().foreach(cat => println(cat))
 
 }
