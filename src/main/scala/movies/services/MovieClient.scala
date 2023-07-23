@@ -25,15 +25,19 @@ case class MovieClientImpl(urlDomain: String, port: Int,connection: SttpBackend[
   override def createMovie(movie: Movie): Either[Error,Movie] = {
 
     val response: Identity[Response[Either[String, String]]] =
-      basicRequest.get(moviesUri).send(connection)
+      basicRequest.put(moviesUri).send(connection)
 
 
     //response..body
 
     val responseObject = response.body match {
-      case Left(error) => Left(Error(error))
+      case Left(error) =>
+        //TODO: Check what happened
+      println(error)
+        Left(Error(error))
       case Right(result) => {
         val json = Json.parse(result)
+        println(json)
         val movies = json.validate[Movie]
         Right(movies.get)
       }
