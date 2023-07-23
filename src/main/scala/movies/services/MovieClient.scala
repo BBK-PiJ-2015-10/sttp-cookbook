@@ -9,16 +9,44 @@ trait MovieClient {
 
   def getMovies() : List[Movie]
 
+  def createMovie(movie: Movie) : Either[Error,Movie]
+
+
+
 }
 
 
 case class MovieClientImpl(urlDomain: String, port: Int,connection: SttpBackend[Identity, Any]) extends MovieClient {
-  override def getMovies(): List[Movie]= {
 
-    val uri: Uri = Uri.apply(urlDomain).port(port).addPath(Seq("movies"))
+  val moviesPath = Seq("movies")
+
+  val moviesUri : Uri = Uri.apply(urlDomain).port(port).addPath(Seq("movies"))
+
+  override def createMovie(movie: Movie): Either[Error,Movie] = {
 
     val response: Identity[Response[Either[String, String]]] =
-      basicRequest.get(uri).send(connection)
+      basicRequest.get(moviesUri).send(connection)
+
+
+    //response..body
+
+    val responseObject = response.body match {
+      case Left(error) => Left(Error(error))
+      case Right(result) => {
+        val json = Json.parse(result)
+        val movies = json.validate[Movie]
+        Right(movies.get)
+      }
+    }
+
+    responseObject
+  }
+
+
+  override def getMovies(): List[Movie]= {
+
+    val response: Identity[Response[Either[String, String]]] =
+      basicRequest.get(moviesUri).send(connection)
 
     val responseObject = response.body match {
       case Left(error) =>   JsError(error)
@@ -36,4 +64,6 @@ case class MovieClientImpl(urlDomain: String, port: Int,connection: SttpBackend[
     }
 
   }
+
+
 }
