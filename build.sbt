@@ -13,5 +13,6 @@ lazy val root = (project in file("."))
 
 libraryDependencies ++= Seq(
   "com.softwaremill.sttp.client3" %% "core" % sttpVersion,
-  "com.typesafe.play" %% "play-json" % playJsonVersion
+  "com.typesafe.play" %% "play-json" % playJsonVersion,
+  "com.softwaremill.sttp.client3" %% "play-json" % "3.8.16"
 )

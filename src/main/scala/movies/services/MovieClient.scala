@@ -4,6 +4,7 @@ import movies.model.{Error, Movie}
 import play.api.libs.json.{JsError, JsResult, JsSuccess, Json}
 import sttp.client3._
 import sttp.model.Uri
+import sttp.client3.playJson._
 
 trait MovieClient {
 
@@ -24,8 +25,11 @@ case class MovieClientImpl(urlDomain: String, port: Int,connection: SttpBackend[
 
   override def createMovie(movie: Movie): Either[Error,Movie] = {
 
-    val response: Identity[Response[Either[String, String]]] =
-      basicRequest.put(moviesUri).send(connection)
+    val json = Json.toJson(movie)
+    val response: Identity[Response[Either[String, String]]] = basicRequest.body(json)
+      .post(moviesUri).send(connection)
+
+    println(s"${response.statusText}")
 
 
     //response..body
