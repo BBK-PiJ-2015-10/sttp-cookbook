@@ -1,5 +1,6 @@
 package movies.services
 
+import com.typesafe.scalalogging.Logger
 import movies.model.{Error, Movie}
 import play.api.libs.json.{JsError, JsResult, JsSuccess, Json}
 import sttp.client3._
@@ -20,6 +21,8 @@ case class MovieClientImpl(urlDomain: String, port: Int,connection: SttpBackend[
   val moviesPath = Seq("movies")
   val moviesUri : Uri = Uri.apply(urlDomain).port(port).addPath(moviesPath)
 
+  val logger = Logger(getClass.getName)
+
   override def createMovie(movie: Movie): Either[Error,Movie] = {
 
     val json = Json.toJson(movie)
@@ -33,6 +36,7 @@ case class MovieClientImpl(urlDomain: String, port: Int,connection: SttpBackend[
         Left(Error(error))
       case Right(result) => {
         val json = Json.parse(result)
+        logger.info(s"Received response $json")
         println(json)
         val movies = json.validate[Movie]
         Right(movies.get)
